@@ -11,7 +11,7 @@ protocol TimerProtocol {
     func start(duration: Int)
 }
 
-class PomodoroSession {
+class PomodoroFlow {
     private let FOCUS_DURATION_IN_MIN = 25
     private let timer: TimerProtocol
     private var numOfSessions = 0
