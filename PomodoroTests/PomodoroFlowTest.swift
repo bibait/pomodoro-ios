@@ -15,15 +15,15 @@ class PomodoroFlowTest: XCTestCase {
     func test_startPomodoro_startsTimer() {
         let sut = makeSUT()
         
-        sut.start()
+        sut.startTimer()
         
-        XCTAssertTrue(timer.isRunning)
+        XCTAssertEqual(timer.startCalledCounter, 1)
     }
     
     func test_startFlow_returnsStateDuration() {
         let sut = makeSUT()
         
-        sut.start()
+        sut.startTimer()
         
         XCTAssertTrue(flowCycle.getStateDurationCalled)
     }
@@ -31,30 +31,36 @@ class PomodoroFlowTest: XCTestCase {
     func test_flow_entersNextState_whenTimerIsFinished() {
         let sut = makeSUT()
         
-        sut.start()
+        sut.startTimer()
         timer.timerFinishedCallback()
         
         XCTAssertTrue(flowCycle.nextStateCalled)
     }
     
-//    func test_startAndFinishFirstSession_startsTimerWith5MinuteShortBreak() {
-//        let sut = makeSUT()
-//        
-//        sut.start()
-//        timer.timerFinishedCallback()
-//        
-//        XCTAssertEqual(timer.duration, 5)
-//    }
-//    
-//    func test_startAndFinishFirstShortBreak_startsTimerWith25MinuteFocusSession() {
-//        let sut = makeSUT()
-//        
-//        sut.start()
-//        timer.timerFinishedCallback()
-//        timer.timerFinishedCallback()
-//        
-//        XCTAssertEqual(timer.duration, 25)
-//    }
+    func test_pausePomodoro_pausesTimer() {
+        let sut = makeSUT()
+        
+        sut.pauseTimer()
+        
+        XCTAssertTrue(timer.isPaused)
+    }
+    
+    func test_flow_doesNotStartAgain_ifItIsRunning() {
+        let sut = makeSUT()
+        
+        sut.startTimer()
+        sut.startTimer()
+        
+        XCTAssertEqual(timer.startCalledCounter, 1)
+    }
+    
+    func test_continuePomodoro_continuesTimer() {
+        let sut = makeSUT()
+        
+        sut.continueTimer()
+        
+        XCTAssertEqual(timer.continueCalledCounter, 1)
+    }
     
     // MARK: - Helper
     
@@ -78,14 +84,22 @@ class PomodoroFlowTest: XCTestCase {
     }
 
     private class MockTimer: TimerProtocol {
-        var isRunning = false
-        var duration: Int = 0
+        var startCalledCounter = 0
+        var continueCalledCounter = 0
+        var isPaused = false
         var timerFinishedCallback: () -> Void = { }
         
         func start(duration: Int, timerFinishedCallback: @escaping () -> Void) {
-            isRunning = true
-            self.duration = duration
+            startCalledCounter += 1
             self.timerFinishedCallback = timerFinishedCallback
+        }
+        
+        func pause() {
+            isPaused = true
+        }
+        
+        func `continue`() {
+            continueCalledCounter += 1
         }
     }
 }
