@@ -7,18 +7,6 @@
 
 import Foundation
 
-protocol TimerProtocol {
-    func start(duration: Int, timerFinishedCallback: @escaping () -> Void)
-    func pause()
-    func `continue`()
-    func reset()
-}
-
-protocol FlowCycleProtocol {
-    func getStateDurationInMinutes() -> Int
-    func nextState()
-}
-
 class PomodoroFlow {
     private let timer: TimerProtocol
     private let flowCycle: FlowCycleProtocol
@@ -46,7 +34,7 @@ class PomodoroFlow {
         timer.continue()
     }
     
-    func reset() {
+    func resetTimer() {
         timer.reset()
     }
 }

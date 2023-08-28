@@ -56,7 +56,7 @@ class PomodoroFlowTest: XCTestCase {
     func test_flow_resetTimer_callsResetTimer() {
         let sut = makeSUT()
         
-        sut.reset()
+        sut.resetTimer()
         
         XCTAssertEqual(timer.resetCalledCounter, 1)
     }
