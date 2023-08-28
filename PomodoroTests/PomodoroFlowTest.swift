@@ -20,12 +20,12 @@ class PomodoroFlowTest: XCTestCase {
         XCTAssertEqual(timer.startCalledCounter, 1)
     }
     
-    func test_startFlow_returnsStateDuration() {
+    func test_startFlow_getsStateDuration() {
         let sut = makeSUT()
         
         sut.startTimer()
         
-        XCTAssertTrue(flowCycle.getStateDurationCalled)
+        XCTAssertEqual(flowCycle.getStateDurationCalledCounter, 1)
     }
     
     func test_flow_entersNextState_whenTimerIsFinished() {
@@ -34,32 +34,31 @@ class PomodoroFlowTest: XCTestCase {
         sut.startTimer()
         timer.timerFinishedCallback()
         
-        XCTAssertTrue(flowCycle.nextStateCalled)
+        XCTAssertEqual(flowCycle.nextStateCalledCounter, 1)
     }
     
-    func test_pausePomodoro_pausesTimer() {
+    func test_flow_pausePomodoro_callsPauseTimer() {
         let sut = makeSUT()
         
         sut.pauseTimer()
         
-        XCTAssertTrue(timer.isPaused)
+        XCTAssertEqual(timer.pauseCalledCounter, 1)
     }
     
-    func test_flow_doesNotStartAgain_ifItIsRunning() {
-        let sut = makeSUT()
-        
-        sut.startTimer()
-        sut.startTimer()
-        
-        XCTAssertEqual(timer.startCalledCounter, 1)
-    }
-    
-    func test_continuePomodoro_continuesTimer() {
+    func test_flow_continuePomodoro_callsContinuesTimer() {
         let sut = makeSUT()
         
         sut.continueTimer()
         
         XCTAssertEqual(timer.continueCalledCounter, 1)
+    }
+    
+    func test_flow_resetTimer_callsResetTimer() {
+        let sut = makeSUT()
+        
+        sut.reset()
+        
+        XCTAssertEqual(timer.resetCalledCounter, 1)
     }
     
     // MARK: - Helper
@@ -69,24 +68,25 @@ class PomodoroFlowTest: XCTestCase {
     }
     
     private class MockCycle: FlowCycleProtocol {
-        var getStateDurationCalled = false
-        var nextStateCalled = false
+        var getStateDurationCalledCounter = 0
+        var nextStateCalledCounter = 0
 
         func getStateDurationInMinutes() -> Int {
-            getStateDurationCalled = true
+            getStateDurationCalledCounter += 1
             
-            return 5
+            return 0
         }
         
         func nextState() {
-            nextStateCalled = true
+            nextStateCalledCounter += 1
         }
     }
 
     private class MockTimer: TimerProtocol {
         var startCalledCounter = 0
         var continueCalledCounter = 0
-        var isPaused = false
+        var pauseCalledCounter = 0
+        var resetCalledCounter = 0
         var timerFinishedCallback: () -> Void = { }
         
         func start(duration: Int, timerFinishedCallback: @escaping () -> Void) {
@@ -95,11 +95,15 @@ class PomodoroFlowTest: XCTestCase {
         }
         
         func pause() {
-            isPaused = true
+            pauseCalledCounter += 1
         }
         
         func `continue`() {
             continueCalledCounter += 1
+        }
+        
+        func reset() {
+            resetCalledCounter += 1
         }
     }
 }

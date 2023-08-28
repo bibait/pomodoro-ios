@@ -11,6 +11,7 @@ protocol TimerProtocol {
     func start(duration: Int, timerFinishedCallback: @escaping () -> Void)
     func pause()
     func `continue`()
+    func reset()
 }
 
 protocol FlowCycleProtocol {
@@ -18,15 +19,9 @@ protocol FlowCycleProtocol {
     func nextState()
 }
 
-enum TimerState {
-    case initial
-    case running
-}
-
 class PomodoroFlow {
     private let timer: TimerProtocol
     private let flowCycle: FlowCycleProtocol
-    private var timerState: TimerState = .initial
     
     init(timer: TimerProtocol, flowCycle: FlowCycleProtocol) {
         self.timer = timer
@@ -34,11 +29,7 @@ class PomodoroFlow {
     }
     
     func startTimer() {
-        if timerState == .initial {
-            timerState = .running
-            
-            timer.start(duration: flowCycle.getStateDurationInMinutes(), timerFinishedCallback: nextTimer)
-        }
+        timer.start(duration: flowCycle.getStateDurationInMinutes(), timerFinishedCallback: nextTimer)
     }
     
     private func nextTimer() {
@@ -53,5 +44,9 @@ class PomodoroFlow {
     
     func continueTimer() {
         timer.continue()
+    }
+    
+    func reset() {
+        timer.reset()
     }
 }
