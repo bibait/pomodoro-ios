@@ -11,18 +11,27 @@ protocol TimerProtocol {
     func start(duration: Int, timerFinishedCallback: @escaping () -> Void)
 }
 
+protocol FlowCycleProtocol {
+    func getStateDurationInMinutes() -> Int
+    func nextState()
+}
+
 class PomodoroFlow {
     private let timer: TimerProtocol
+    private let flowCycle: FlowCycleProtocol
     
-    init(timer: TimerProtocol) {
+    init(timer: TimerProtocol, flowCycle: FlowCycleProtocol) {
         self.timer = timer
+        self.flowCycle = flowCycle
     }
     
     func start() {
-        timer.start(duration: 25) { [weak self] in
-            self?.timer.start(duration: 5) {
-                
-            }
-        }
+        timer.start(duration: flowCycle.getStateDurationInMinutes(), timerFinishedCallback: nextTimer)
+    }
+    
+    private func nextTimer() {
+        flowCycle.nextState()
+
+        timer.start(duration: flowCycle.getStateDurationInMinutes(), timerFinishedCallback: nextTimer)
     }
 }

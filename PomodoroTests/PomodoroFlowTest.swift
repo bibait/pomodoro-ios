@@ -10,38 +10,74 @@ import XCTest
 
 class PomodoroFlowTest: XCTestCase {
     private let timer = MockTimer()
+    private let flowCycle = MockCycle()
 
     func test_startPomodoro_startsTimer() {
-        let sut = PomodoroFlow(timer: timer)
+        let sut = makeSUT()
         
         sut.start()
         
         XCTAssertTrue(timer.isRunning)
     }
     
-    func test_startPomodoro_forFirstTime_startsTimerWith25MinuteDuration() {
-        let sut = PomodoroFlow(timer: timer)
+    func test_startFlow_returnsStateDuration() {
+        let sut = makeSUT()
         
         sut.start()
         
-        XCTAssertEqual(timer.duration, 25)
+        XCTAssertTrue(flowCycle.getStateDurationCalled)
     }
     
-    func test_timer_callsCompletionHandler_whenFinished() {
-        let sut = PomodoroFlow(timer: timer)
+    func test_flow_entersNextState_whenTimerIsFinished() {
+        let sut = makeSUT()
         
         sut.start()
-        
         timer.timerFinishedCallback()
         
-        XCTAssertEqual(timer.duration, 5)
+        XCTAssertTrue(flowCycle.nextStateCalled)
     }
     
-    
+//    func test_startAndFinishFirstSession_startsTimerWith5MinuteShortBreak() {
+//        let sut = makeSUT()
+//        
+//        sut.start()
+//        timer.timerFinishedCallback()
+//        
+//        XCTAssertEqual(timer.duration, 5)
+//    }
+//    
+//    func test_startAndFinishFirstShortBreak_startsTimerWith25MinuteFocusSession() {
+//        let sut = makeSUT()
+//        
+//        sut.start()
+//        timer.timerFinishedCallback()
+//        timer.timerFinishedCallback()
+//        
+//        XCTAssertEqual(timer.duration, 25)
+//    }
     
     // MARK: - Helper
+    
+    private func makeSUT() -> PomodoroFlow {
+        return PomodoroFlow(timer: timer, flowCycle: flowCycle)
+    }
+    
+    private class MockCycle: FlowCycleProtocol {
+        var getStateDurationCalled = false
+        var nextStateCalled = false
 
-    class MockTimer: TimerProtocol {
+        func getStateDurationInMinutes() -> Int {
+            getStateDurationCalled = true
+            
+            return 5
+        }
+        
+        func nextState() {
+            nextStateCalled = true
+        }
+    }
+
+    private class MockTimer: TimerProtocol {
         var isRunning = false
         var duration: Int = 0
         var timerFinishedCallback: () -> Void = { }
