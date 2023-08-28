@@ -15,6 +15,8 @@
 		0E1345EF2A974192003E4055 /* PomodoroFlow.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0E1345EE2A974192003E4055 /* PomodoroFlow.swift */; };
 		0E51DA602A9CAD16007DAA9F /* TimerProtocol.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0E51DA5F2A9CAD16007DAA9F /* TimerProtocol.swift */; };
 		0E51DA622A9CAD2E007DAA9F /* FlowCycleProtocol.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0E51DA612A9CAD2E007DAA9F /* FlowCycleProtocol.swift */; };
+		0E51DA682A9CB47E007DAA9F /* PomodoroTimerTest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0E51DA672A9CB47E007DAA9F /* PomodoroTimerTest.swift */; };
+		0E51DA6A2A9CB795007DAA9F /* PomodoroTimer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0E51DA692A9CB795007DAA9F /* PomodoroTimer.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -38,6 +40,8 @@
 		0E1345EE2A974192003E4055 /* PomodoroFlow.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PomodoroFlow.swift; sourceTree = "<group>"; };
 		0E51DA5F2A9CAD16007DAA9F /* TimerProtocol.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TimerProtocol.swift; sourceTree = "<group>"; };
 		0E51DA612A9CAD2E007DAA9F /* FlowCycleProtocol.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FlowCycleProtocol.swift; sourceTree = "<group>"; };
+		0E51DA672A9CB47E007DAA9F /* PomodoroTimerTest.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PomodoroTimerTest.swift; sourceTree = "<group>"; };
+		0E51DA692A9CB795007DAA9F /* PomodoroTimer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PomodoroTimer.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -84,6 +88,7 @@
 				0E1345C42A9720A4003E4055 /* ContentView.swift */,
 				0E1345C62A9720A5003E4055 /* Assets.xcassets */,
 				0E1345C82A9720A5003E4055 /* Preview Content */,
+				0E51DA692A9CB795007DAA9F /* PomodoroTimer.swift */,
 			);
 			path = Pomodoro;
 			sourceTree = "<group>";
@@ -100,6 +105,7 @@
 			isa = PBXGroup;
 			children = (
 				0E51DA642A9CAE55007DAA9F /* PomodoroFlowTests */,
+				0E51DA672A9CB47E007DAA9F /* PomodoroTimerTest.swift */,
 			);
 			path = PomodoroTests;
 			sourceTree = "<group>";
@@ -231,6 +237,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				0E51DA6A2A9CB795007DAA9F /* PomodoroTimer.swift in Sources */,
 				0E1345EF2A974192003E4055 /* PomodoroFlow.swift in Sources */,
 				0E51DA622A9CAD2E007DAA9F /* FlowCycleProtocol.swift in Sources */,
 				0E51DA602A9CAD16007DAA9F /* TimerProtocol.swift in Sources */,
@@ -243,6 +250,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				0E51DA682A9CB47E007DAA9F /* PomodoroTimerTest.swift in Sources */,
 				0E1345ED2A972607003E4055 /* PomodoroFlowTest.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
